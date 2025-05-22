@@ -6,7 +6,7 @@ import java.util.*;
 
 public class UserRepo {
     private  final Set<User> users = new HashSet<>();
-    private String loggedInUser;
+    private final Set<String> loggedInUsers = new HashSet<>();
 
     private static UserRepo userRepo;
     private UserRepo(){
@@ -26,19 +26,20 @@ public class UserRepo {
         return users.stream().filter(user -> userName.equalsIgnoreCase(user.getUserName())).findFirst();
     }
 
-    public void logout(){
-        if(loggedInUser == null){
+    public void logout(String userName){
+        if(!loggedInUsers.contains(userName)){
             System.out.println("No logged in User");
         }else{
-            this.loggedInUser = null;
+            loggedInUsers.remove(userName);
         }
     }
-    public String getLoggedInUser(){
-        return this.loggedInUser;
+
+
+    public boolean isUserLoggedIn(String userName) {
+        return loggedInUsers.contains(userName);
     }
 
-
-    public void setLoggedInUser(String userName) {
-        this.loggedInUser = userName;
+    public void addToLoggedInUser(String userName) {
+        loggedInUsers.add(userName);
     }
 }

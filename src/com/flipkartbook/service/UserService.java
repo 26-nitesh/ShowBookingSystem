@@ -9,7 +9,7 @@ public class UserService {
 
     }
     private static UserService userService;
-    public UserService getInstance(){
+    public static UserService getInstance(){
         if(userService == null){
             userService = new UserService();
         }
@@ -27,16 +27,16 @@ public class UserService {
 
     public void login(String userName){
         if(userRepo.findByUserName(userName).isPresent()) {
-            userRepo.setLoggedInUser(userName);
+            userRepo.addToLoggedInUser(userName);
             System.out.println("User logged in sucessfully");
         }else{
             System.out.println("User Not found");
         }
     }
-    public void logout(){
-        userRepo.logout();
+    public void logout(String userName){
+        userRepo.logout(userName);
     }
-    public String getLoggedInUser(){
-        return userRepo.getLoggedInUser();
+    public boolean isUserLoggedIn(String userName){
+        return userRepo.isUserLoggedIn(userName);
     }
 }

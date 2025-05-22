@@ -6,4 +6,5 @@ public class Booking {
     private String userName;
     private List<ShowSlots> showSlots;
 
+
 }
