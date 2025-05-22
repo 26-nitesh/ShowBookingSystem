@@ -35,4 +35,13 @@ public class SlotsRepo {
     public Optional<ShowSlots> findByNameAndStart(String showName, String start) {
         return showSlotsList.stream().filter(slot -> (showName.equalsIgnoreCase(slot.getShowName())) && start.equals(slot.getStart())).findFirst();
     }
+
+    public void updateSeats(ShowSlots slot) {
+        System.out.println("Before updating Availble seats");
+        showSlotsList.stream().forEach(sl->{
+            if(slot.getShowName().equals(sl.getShowName()) && slot.getStart().equals(sl.getStart())){
+                sl.setBooked(slot.getBooked());
+            }
+        });
+    }
 }

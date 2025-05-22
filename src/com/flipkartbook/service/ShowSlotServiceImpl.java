@@ -30,14 +30,15 @@ public class ShowSlotServiceImpl {
             if(showService.findByName(showSlots.getShowName()).isPresent()){
                 Optional<ShowSlots> existingSlots = slotsRepo.findByNameAndStart(showSlots.getShowName(), showSlots.getStart());
                 if(existingSlots.isPresent()){
-                    if(showSlots.getEnd() == null || (showSlots.getEnd() != null && isTimeSlotValid(showSlots.getStart(), showSlots.getEnd()))){
-                        System.out.println("Slots with this time already found , Updating capacity");
-                        ShowSlots showSlots1 = existingSlots.get();
-                        showSlots1.setCapacity(showSlots1.getCapacity()+showSlots.getCapacity());
-                        System.out.println("Slots Updated SucessFully");
-                    }else{
-                            System.out.println("Time Slot is not valid");
-                        }
+                    System.out.println("Show Overlapped");
+//                    if(showSlots.getEnd() == null || (showSlots.getEnd() != null && isTimeSlotValid(showSlots.getStart(), showSlots.getEnd()))){
+//                        System.out.println("Slots with this time already found , Updating capacity");
+//                        ShowSlots showSlots1 = existingSlots.get();
+//                        showSlots1.setCapacity(showSlots1.getCapacity()+showSlots.getCapacity());
+//                        System.out.println("Slots Updated SucessFully");
+//                    }else{
+//                            System.out.println("Time Slot is not valid");
+//                        }
                 }else{
                   if(showSlots.getEnd() == null || (showSlots.getEnd() != null && isTimeSlotValid(showSlots.getStart(), showSlots.getEnd()))){
                       slotsRepo.addSlots(showSlots);
@@ -47,7 +48,7 @@ public class ShowSlotServiceImpl {
                       }
                 }
             }else{
-                System.out.println("Show is Not Available to add slots");
+                System.out.println("Invalid show , : Show is Not Available in system to add slots");
             }
         }else{
             System.out.println("Null passed for showname or slot start");
@@ -72,5 +73,12 @@ public class ShowSlotServiceImpl {
         }
         showSlots.sort(Comparator.comparing(slot -> LocalTime.parse(slot.getStart())));
         return showSlots;
+    }
+    public Optional<ShowSlots> findByShowNameAndStart(String showName, String start){
+        return slotsRepo.findByNameAndStart(showName, start);
+    }
+
+    public void updateSeats(ShowSlots slot) {
+        slotsRepo.updateSeats(slot);
     }
 }
