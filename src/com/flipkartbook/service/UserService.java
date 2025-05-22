@@ -27,16 +27,16 @@ public class UserService {
 
     public void login(String userName){
         if(userRepo.findByUserName(userName).isPresent()) {
-            userRepo.addToLoggedInUser(userName);
+            userRepo.setLoggedInUser(userName);
             System.out.println("User logged in sucessfully");
         }else{
             System.out.println("User Not found");
         }
     }
-    public void logout(String userName){
-        userRepo.logout(userName);
+    public void logout(){
+        userRepo.logout();
     }
-    public boolean isUserLoggedIn(String userName){
-        return userRepo.isUserLoggedIn(userName);
+    public String getLoggedInUser(){
+        return userRepo.getLoggedInUser();
     }
 }

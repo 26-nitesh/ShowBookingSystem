@@ -35,12 +35,11 @@ public class Test {
          showSlotService.onboardSlots(new ShowSlots("13:00","14:00",6,"Hera Pheri"));
          bookingService.displayShowDetailsOnGerne(Genre.COMEDY); // will display sorted on name, foloowed by slot timing
 
-         userService.logout("7898");// can't log out as no logged in
+         userService.logout();// can't log out as no logged in
          userService.login("user123");
          userService.register(new User("user456"));
          userService.login("user456");
-         System.out.println(userService.isUserLoggedIn("user456"));
-         System.out.println(userService.isUserLoggedIn("7yug"));
+         System.out.println(userService.getLoggedInUser());
 
     }
 }
