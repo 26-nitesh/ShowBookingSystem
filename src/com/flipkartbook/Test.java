@@ -16,12 +16,12 @@ public class Test {
          BookingService bookingService = BookingService.getInstance();
          UserService userService = UserService.getInstance();
 
-         userService.logout();// can't log out as no logged in
-         userService.login("user123");
-         userService.register(new User("user456"));
+         userService.logout("test");// can't log out as no logged in
+         userService.login("user123"); // not registered
+         userService.register(new User("user456")); //registered
          userService.login("user456");
-         System.out.println(userService.getLoggedInUser());
-         userService.logout();
+         System.out.println(userService.isLoggedIn("user456"));
+         userService.logout("user456");
 
 
 
@@ -35,18 +35,29 @@ public class Test {
          showSlotService.onboardSlots(new ShowSlots("20:00","21:00",3,"TMKOC"));
 
 
-         bookingService.displayShowDetailsOnGerne(Genre.ACTION);//Error!! Please log in first to See Details..
+         bookingService.displayShowDetailsOnGerne(Genre.ACTION,null);//Error!! Please log in first to See Details..
 
-         userService.login("user456");
+         String user1 = "user456";
+         userService.login(user1);
 
-         bookingService.displayShowDetailsOnGerne(Genre.COMEDY); // will display on sorted order of same tmkoc based on start time
+         bookingService.displayShowDetailsOnGerne(Genre.COMEDY, user1); // will display on sorted order of same tmkoc based on start time
 
          showSlotService.onboardSlots(new ShowSlots("15:00","16:00",12,"OOO")); // can't be created because show isn't available
 
          showService.registerShow(new LiveShows("Hera Pheri", Genre.COMEDY));
          showSlotService.onboardSlots(new ShowSlots("18:00","19:00",5,"Hera Pheri"));
          showSlotService.onboardSlots(new ShowSlots("13:00","14:00",6,"Hera Pheri"));
-         bookingService.displayShowDetailsOnGerne(Genre.COMEDY); // will display sorted on name, foloowed by slot timing
+         bookingService.displayShowDetailsOnGerne(Genre.COMEDY,user1); // will display sorted on name, foloowed by slot timing
+
+         bookingService.bookShow("TMKOC","10:00",5,user1);
+         bookingService.displayShowDetailsOnGerne(Genre.COMEDY,user1);// after booking seats reduced
+         bookingService.bookShow("RRR","10:00",5,user1); // same User trying to book another show for same time
+         bookingService.bookShow("Hera Pheri","18:00",4,user1);// but can book other timing shows
+         String user2 = "u2";
+         userService.register(new User(user2));
+         userService.login(user2);
+         bookingService.bookShow("RRR","10:00",5,user2); // booking for different user
+         bookingService.bookShow("Hera Pheri","18:00",8,user2); // trying to book more than availble seats
 
     }
 }

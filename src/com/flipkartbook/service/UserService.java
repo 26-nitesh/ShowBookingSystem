@@ -20,6 +20,7 @@ public class UserService {
     public void register(User user){
         if(userRepo.findByUserName(user.getUserName()).isEmpty()){
             userRepo.save(user);
+            System.out.println("User Registered suceefully");
         }else{
             System.out.println("User Already Exist !! please login");
         }
@@ -27,16 +28,19 @@ public class UserService {
 
     public void login(String userName){
         if(userRepo.findByUserName(userName).isPresent()) {
-            userRepo.setLoggedInUser(userName);
+            userRepo.addToLoggedIn(userName);
             System.out.println("User logged in sucessfully");
         }else{
             System.out.println("User Not found");
         }
     }
-    public void logout(){
-        userRepo.logout();
+    public void logout(String userName){
+        userRepo.logout(userName);
     }
-    public String getLoggedInUser(){
-        return userRepo.getLoggedInUser();
+//    public String getLoggedInUser(){
+//        return userRepo.getLoggedInUser();
+//    }
+    public boolean isLoggedIn(String userName){
+        return userRepo.isLoggedIn(userName);
     }
 }
